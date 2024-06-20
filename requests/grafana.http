@@ -1,0 +1,97 @@
+@duid = "fdoyrf0zrtddse"
+
+GET {{baseUrl}}/search
+# GET {{baseUrl}}/dashboards/uid/fdoyrf0zrtddse
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/datasources/uid/adoyfypst15ogc/resources
+# GET {{baseUrl}}/dashboards/uid/fdoyrf0zrtddse
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:3000/api/dashboards/uid/{{duid}}/queries
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "dashboard": {
+        "uid": "{{duid}}"
+    },
+    "panelId": 1,
+    "range": {
+        "from": "2024-06-16T00:00:00Z",
+        "to": "2024-06-17T00:00:00Z",
+        "raw": {
+            "from": "now-1d",
+            "to": "now"
+        }
+    },
+    "interval": "5s"
+}
+
+###
+
+POST {{baseUrl}}/ds/query 
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "queries": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "adoyfypst15ogc"
+      },
+      "groupBy": [
+        {
+          "params": [
+            "$__interval"
+          ],
+          "type": "time"
+        },
+        {
+          "params": [
+            "null"
+          ],
+          "type": "fill"
+        }
+      ],
+      "hide": false,
+      "measurement": "reactor_data",
+      "orderByTime": "ASC",
+      "policy": "default",
+      "refId": "A",
+      "resultFormat": "time_series",
+      "select": [
+        [
+          {
+            "params": [
+              "pressure"
+            ],
+            "type": "field"
+          },
+          {
+            "params": [],
+            "type": "mean"
+          }
+        ]
+      ],
+      "tags": [],
+      "adhocFilters": [],
+      "query": "",
+      "rawSql": "",
+      "alias": "",
+      "limit": "",
+      "slimit": "",
+      "tz": "",
+      "datasourceId": 1,
+      "intervalMs": 10000,
+      "maxDataPoints": 1048
+    }
+  ],
+  "from": "1718731557334",
+  "to": "1718732457334"
+}
